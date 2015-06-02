@@ -1,0 +1,10 @@
+安装matlab2011a的步骤
+1.挂载 sudo mount -o loop ~/software/Mathworks.iso /mnt
+2.安装 
+cd /mnt
+sudo ./install
+3.运行
+cd /opt/bin
+./matlab
+解决中文乱码问题
+创建matlab的桌面快捷方式

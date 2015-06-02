@@ -1,0 +1,30 @@
+visual studio 2013下配置opencv2.4.9
+1、安装visual studio 2013
+visual studio 2013破解版下载：http://www.itopdog.cn/soft/visualstudio2013.html
+2、安装opencv2.4.9
+
+3、配置环境变量
+计算机->（右键）属性->高级系统设置->高级（标签）->环境变量->（双击）path（用户，系统里面的path任选其一）->在变量值里面添加相应的路径。例如D:\Program Files\OpenCV2.2.0\bin
+4、工程包含（include）目录的配置
+属性->配置属性->C/C++->常规->附加包含目录，在其中加入：D:\Program Files\OpenCV2.2.0\include;D:\Program Files\OpenCV2.2.0\include\opencv;D:\Program Files\OpenCV2.2.0\include\opencv2;
+5、工程库（lib）目录的配置
+属性->配置属性->链接器->常规->附加库目录，在其中加入：D:\Program Files\OpenCV2.2.0\lib
+6、测试
+属性->配置属性->调试->命令参数，写入参数，例如：E:\zhuyafei\IMG\*.jpg E:\zhuyafei\GT\*.bmp E:\zhuyafei\Sal E:\zhuyafei\EvaluateShow.m
+7、常见问题
+1)fatal error LNK 1104: 无法打开文件"cxcore210d.lib cv210d.lib highgui210d.lib"
+解决方法：根据自己机器上的OpenCV版本定义宏
+OpenCV_2_1_0
+#pragma comment( lib, "cxcore210d.lib" )
+#pragma comment( lib, "cv210d.lib" )
+#pragma comment( lib, "highgui210d.lib" ) 
+OpenCV_2_2_0
+#pragma comment( lib, "opencv_core220d.lib" )
+#pragma comment( lib, "opencv_highgui220d.lib" )
+#pragma comment( lib, "opencv_imgproc220d.lib" )
+2)LINK : fatal error LNK1123: 转换到 COFF 期间失败: 文件无效或损坏
+解决方法如下：
+项目\属性\配置属性\清单工具\输入和输出\嵌入清单：原来是“是”，改成“否”。
+3)xx.exe中的0X7535812f处有未经处理的异常：Microsoft C++异常：内存位置0x0026ee28处的cv::Exception
+出现这样的错误说明代码某处有问题，可单步执行进行调试。
+

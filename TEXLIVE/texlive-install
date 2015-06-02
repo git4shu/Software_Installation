@@ -1,0 +1,100 @@
+
+Ubuntu14.04下安装TexLive2014并配置中文字体
+
+一：安装TexLive2014
+
+1.下载TexLive2014镜像文件到/home/name
+2.挂载镜像文件：
+
+在终端输入：sudo mount -o loop /home/fei/software/texlive2014.iso /mnt
+3.进行安装
+
+在终端输入：cd /mnt
+
+           sudo ./install-tl
+
+注意安装后默认的安装目录是/usr/local，要把安装文件移动到/opt下：mv /usr/local/texlive /opt
+
+4.配置环境变量：
+
+   1.打开终端，输入：sudo vim ~/.bashrc 　
+
+         在最后添加以下代码：
+
+        PATH=/opt/texlive/2014/bin/x86_64-linux:$PATH; export PATH
+        MANPATH=/opt/texlive/2014/texmf-dist/doc/man:$MANPATH; export MANPATH
+        INFOPATH=/opt/texlive/2014/texmf-dist/doc/info:$INFOPATH; export INFOPATH
+
+   2. 然后sudo vim /etc/manpath.config
+　　 在# set up PATH to MANPATH mapping下输入
+
+        MANPATH_MAP /opt/texlive/2014/bin/x86_64-linux (空格)/opt/texlive/2014/texmf-dist/doc/man
+
+5.测试
+
+此时texlive就安装成功了，你可以在/home/name下新建一个1.tex的文档，比如
+
+\documentclass{article}
+
+\begin{document}
+
+dffdrgdfgfdgfd
+
+\end{document}
+
+然后打开终端输入cd /home/name
+
+               xelatex 1.tex
+
+如果能生成一个PDF文件，里面的内容是dffdrgdfgfdgfd ，就说明安装成功了。
+
+二：中文配置：
+
+1.在所新建测试文档的目录中新建一个zhfontcfg.sty的文件，文件的内容是
+
+\ProvidesPackage{zhfontcfg}
+
+\usepackage{fontspec,xunicode,xltxtra}  % for XeTeX
+\usepackage[BoldFont,SlantFont,CJKnumber,CJKchecksingle]{xeCJK}  
+
+\defaultfontfeatures{Mapping=tex-text} %如果没有它，会有一些 tex 特殊字符无法正常使用，比如连字符。
+
+% 中文断行
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt
+
+\setCJKmainfont[BoldFont={Adobe Heiti Std}, ItalicFont={Adobe Kaiti Std}]{Adobe Song Std}
+
+\setCJKfamilyfont{song}{Adobe Song Std}
+\setCJKfamilyfont{hei}{Adobe Heiti Std}
+\setCJKfamilyfont{kai}{Adobe Kaiti Std}
+
+%楷体
+\newcommand{\kai}{\CJKfamily{kai}} 
+\def\kaishu{\kai}
+%黑体
+\newcommand{\hei}{\CJKfamily{hei}} 
+\def\heiti{\hei}
+%宋体
+\newcommand{\song}{\CJKfamily{song}} 
+\def\songti{\song}
+
+2.察看电脑中所安装过的字体：在终端输入：fc-list :lang=zh-cn，看是否有simhei,simkai,simsong字体，若没有，拷贝simhei.ttf,simkai.ttf,simsun.ttc到~/.fonts中，你可以新建一个名为sim-fonts的文件夹，然后把这三个文件放在里面。
+
+3.测试
+
+新建一个名为2.tex的测试文档
+
+文档内容
+
+\documentclass{article}
+
+\usepackage{zhfontcfg}
+
+\begin{document}
+
+中文
+
+\end{document}
+
+输入命令xelatex 2.tex，若生成一个内容为“中文”的PDF文档，则说明配置成功了（注意，你的.tex文档应该与zhfontcfg.sty文件同在一个文件夹）。

@@ -1,0 +1,32 @@
+一、安装codeblocks
+sudo apt-get install CodeBlocks
+二、安装opencv
+1.安装需要的包
+1)Gcc 4.4.x or later;
+sudo apt-get install build-essential
+2)CMake 2.6 or higher;
+3)GTK+2.x or higher, including headers(libgtk2.0-dev);
+4)pkg-config
+5)Python 2.6 or later and Numpy 1.5 or later with developer packages (python-dev, python-numpy);
+6)ffmpeg or libav development packages: libavcodec-dev, libavformat-dev, libswscale-dev;
+7)[optional] libdc1394 2.x;
+8)[optional] libjpeg-dev, libpng-dev, libtiff-dev, libjasper-dev.
+2.从opencv官网下载最新的源码包，如opencv-2.4.9.zip，解压至~/software/opencv
+3.使用CMake进行对源码进行编译
+1）
+2）用法：cmake [<some optional parameters>] <path to the OpenCV source directory>
+cd ~/software/opencv/opencv-2.4.9
+mkdir release
+cd release
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/opt/opencv ..
+3）
+make
+sudo make install
+4.
+settings->Compiler settings
+在Search directories中加上:
+/opt/opencv/include
+/opt/opencv/include/opencv
+/opt/opencv/include/opencv2
+在Linker settings中加上/opt/opencv/lib/下的所有文件
+
